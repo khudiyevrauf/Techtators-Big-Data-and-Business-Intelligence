@@ -1,5 +1,5 @@
 # Movie Collaboration Network Analysis
-## Techtators-Big-Dat-and-Bussiness-Intellligence Capstone Project
+## Techtators-Big-Data-and-Bussiness-Intellligence Capstone Project
 
 ---
 
