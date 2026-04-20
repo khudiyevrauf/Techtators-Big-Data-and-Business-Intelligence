@@ -23,7 +23,19 @@ After downloading:
 -Source: Kaggle — IMDB TMDB Movie Metadata Big Dataset
 - Final cleaned dataset: 3,146 movies (1990–2024)
 - Format: CSV
+  
+---
 
+### Stage 1 — Team Formation + Dataset Discovery
+### Stage 2 — Data Modeling + First Load 
+### Stage 3 — ETL Pipeline + Scale-Up Draft
+### Stage 4 — Mid-term Presentation
+### Stage 5 — ML + Embeddings
+### Stage 6 — Graph Analytics + Interpretation
+### Stage 7 - Integration Workshop
+### Stage 8 - Final Presentation
+
+---
 
 ### Columns Used
 | Column | Type | Description |
@@ -136,16 +148,6 @@ Confirmed all nodes and relationships loaded correctly, then ran a visual query 
  network (revenue > $500M) — 10 Directors, 11 Actors, 15 Movies.
 
 ---
-
-### Stage 3 — ETL Pipeline + Scale-Up Draft
-### Stage 4 — Mid-term Presentation
-### Stage 5 — ML + Embeddings
-### Stage 6 — Graph Analytics + Interpretation
-### Stage 7 - Integration Workshop
-### Stage 8 - Final Presentation
-
----
-
 
 ## Tech Stack
 | Tool | Purpose |
