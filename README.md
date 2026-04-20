@@ -162,7 +162,7 @@ Confirmed all nodes and relationships loaded correctly, then ran a visual query 
 
 ## Repository Structure
 
-BD-BI-Capstone/
+Techtators-Big-Data-and-Bussiness-Intelligence/
 ├── data/
 │   └── movies_cleaned.csv
 ├── neo4j/
