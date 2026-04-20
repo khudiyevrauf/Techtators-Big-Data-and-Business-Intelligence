@@ -25,7 +25,7 @@ After downloading:
 - Format: CSV
   
 ---
-
+**Project Stages**
 ### Stage 1 — Team Formation + Dataset Discovery
 ### Stage 2 — Data Modeling + First Load 
 ### Stage 3 — ETL Pipeline + Scale-Up Draft
@@ -127,7 +127,7 @@ After downloading:
 
 ---
 
-What We Did in Neo4j?
+**What We Did in Neo4j?**
 1. Setup
 Connected to the locally running Neo4j Desktop instance bdbi via the Query Browser at neo4j://127.0.0.1:7687.
 2. Found Import Folder
