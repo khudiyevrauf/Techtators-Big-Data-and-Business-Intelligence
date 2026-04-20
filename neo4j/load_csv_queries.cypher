@@ -71,3 +71,9 @@ MATCH (d)-[:DIRECTED]->(m:Movie)<-[:ACTED_IN]-(a)
 WHERE m.revenue > 500000000
 RETURN d, a, m
 LIMIT 15;
+
+// Another query for shoeing relationship in more understanding way(Collaborated with)
+MATCH (d:Director)-[r:COLLABORATED_WITH]->(a:Actor)
+WHERE r.movies >= 3
+RETURN d, r, a
+LIMIT 20
