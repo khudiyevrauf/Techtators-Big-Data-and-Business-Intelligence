@@ -9,11 +9,21 @@ impact on the commercial success of films?"**
 
 ---
 
-## Dataset
-**IMDB + TMDb Movie Metadata Dataset (1M rows)**
-- Source: Kaggle — IMDB TMDB Movie Metadata Big Dataset
+## Raw Dataset
+The raw dataset is too large for GitHub (1M rows, ~500MB).
+
+Download it from Kaggle:
+🔗 https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m
+
+After downloading:
+1. Place the file in the `data/` folder
+2. Rename it to `IMDB TMDB Movie Metadata Big Dataset (1M).csv`
+3. Run `notebooks/Code_clean_duckdb.ipynb` to reproduce the cleaned dataset
+   
+-Source: Kaggle — IMDB TMDB Movie Metadata Big Dataset
 - Final cleaned dataset: 3,146 movies (1990–2024)
 - Format: CSV
+
 
 ### Columns Used
 | Column | Type | Description |
