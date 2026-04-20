@@ -25,7 +25,7 @@ After downloading:
 - Format: CSV
   
 ---
-**Project Stages**
+## Project Stages
 ### Stage 1 — Team Formation + Dataset Discovery
 ### Stage 2 — Data Modeling + First Load 
 ### Stage 3 — ETL Pipeline + Scale-Up Draft
