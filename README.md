@@ -137,11 +137,11 @@ Defined uniqueness constraints for all 4 node types — Movie, Director, Actor a
 4. Loaded Nodes + Relationships
 Used LOAD CSV to build the full graph in 5 steps:
 
-Movie nodes — 3,114 nodes with all properties including free text overview and tagline
-Director nodes + DIRECTED — 1,400 directors linked to their movies
-Actor nodes + ACTED_IN — 1,243 actors linked to their movies
-Genre nodes + BELONGS_TO — 991 genres linked to movies
-COLLABORATED_WITH — 3,059 relationships between directors and actors, weighted by number of movies and total revenue
+   Movie nodes — 3,114 nodes with all properties including free text overview and tagline
+   Director nodes + DIRECTED — 1,400 directors linked to their movies
+   Actor nodes + ACTED_IN — 1,243 actors linked to their movies
+   Genre nodes + BELONGS_TO — 991 genres linked to movies
+   COLLABORATED_WITH — 3,059 relationships between directors and actors, weighted by number of movies and total revenue
 
 5. Verified & Visualized
 Confirmed all nodes and relationships loaded correctly, then ran a visual query showing the blockbuster collaboration
