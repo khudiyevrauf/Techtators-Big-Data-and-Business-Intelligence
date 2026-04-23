@@ -1,5 +1,5 @@
 # Movie Collaboration Network Analysis
-## Techtators-Big-Data-and-Bussiness-Intellligence Capstone Project
+## Techtators-Big-Data-and-Business-Intelligence Capstone Project
 
 ---
 
@@ -18,26 +18,15 @@ Download it from Kaggle:
 After downloading:
 1. Place the file in the `data/` folder
 2. Rename it to `IMDB TMDB Movie Metadata Big Dataset (1M).csv`
-3. Run `notebooks/Code_clean_duckdb.ipynb` to reproduce the cleaned dataset
-   
--Source: Kaggle — IMDB TMDB Movie Metadata Big Dataset
+3. Run `notebooks/01_etl.ipynb` to reproduce the cleaned dataset
+
+- Source: Kaggle — IMDB TMDB Movie Metadata Big Dataset
 - Final cleaned dataset: 3,146 movies (1990–2024)
-- Format: CSV
-  
----
-## Project Stages
-### Stage 1 — Team Formation + Dataset Discovery
-### Stage 2 — Data Modeling + First Load 
-### Stage 3 — ETL Pipeline + Scale-Up Draft
-### Stage 4 — Mid-term Presentation
-### Stage 5 — ML + Embeddings
-### Stage 6 — Graph Analytics + Interpretation
-### Stage 7 - Integration Workshop
-### Stage 8 - Final Presentation
+- Format: CSV + Parquet
 
 ---
 
-### Columns Used
+## Columns Used
 | Column | Type | Description |
 |---|---|---|
 | title | VARCHAR | Movie title |
@@ -57,12 +46,12 @@ After downloading:
 | production_countries | VARCHAR | Country of production |
 
 ✦ Free text / unstructured columns used for semantic embeddings
-  
+
 ---
 
 ## Project Stages
 
-### Stage 1 — Team Formation + Dataset Discovery
+### Stage 1 — Team Formation + Dataset Discovery ✅
 - Selected and explored the IMDB + TMDb dataset
 - Defined business question
 - Built entity/relationship sketch
@@ -73,13 +62,26 @@ After downloading:
   - Filtered movies from 1990 onwards
   - Final dataset: 3,146 movies, 18 columns, 0 nulls
 
-### Stage 2 — Data Modeling + First Load 
+### Stage 2 — Data Modeling + First Load ✅
 - Defined Neo4j schema with 4 node types and 4 relationship types
 - Loaded data using LOAD CSV queries
 - Built collaboration network graph
 
----
+### Stage 3 — ETL Pipeline + Scale-Up Draft ✅
+- Built complete ETL pipeline (Extract → Transform → Load)
+- Exported cleaned data as both CSV and Parquet
+- Built Neo4j graph load notebook with 3 demo Cypher queries
+- Added ROI with vs without collaboration analysis
+- Wrote Scale-Up Reasoning document
+- Wrote Mid-Term Presentation outline
 
+### Stage 4 — Mid-term Presentation ⏳
+### Stage 5 — ML + Embeddings ⏳
+### Stage 6 — Graph Analytics + Interpretation ⏳
+### Stage 7 — Integration Workshop ⏳
+### Stage 8 — Final Presentation ⏳
+
+---
 
 ## Entity / Relationship Schema
 
@@ -125,27 +127,42 @@ After downloading:
 | Adventure + Fantasy | $739M | 393% |
 | Adventure + Fantasy + Action | $621M | 379% |
 
+### ROI: With vs Without Collaboration
+| Director | Actor | ROI With | ROI Without | Difference |
+|---|---|---|---|---|
+| Peter Jackson | Elijah Wood | 999% | 320% | +679% |
+| Robert Zemeckis | Tom Hanks | 906% | 280% | +626% |
+| Russo Brothers | Joe Russo | 530% | 200% | +330% |
+
 ---
 
-**What We Did in Neo4j?**
-1. Setup
-Connected to the locally running Neo4j Desktop instance bdbi via the Query Browser at neo4j://127.0.0.1:7687.
-2. Found Import Folder
-Ran a config query to find the exact path where Neo4j reads CSV files from, then copied movies_cleaned.csv into that folder via Mac Terminal.
-3. Created Constraints (Schema)
+## What We Did in Neo4j
+
+### 1. Setup
+Connected to the locally running Neo4j Desktop instance **bdbi** via the Query Browser at `neo4j://127.0.0.1:7687`.
+
+### 2. Found Import Folder
+Ran a config query to find the exact path where Neo4j reads CSV files from, then copied `movies_cleaned.csv` into that folder via Mac Terminal.
+
+### 3. Created Constraints (Schema)
 Defined uniqueness constraints for all 4 node types — Movie, Director, Actor and Genre — to ensure no duplicate nodes and to speed up lookups.
-4. Loaded Nodes + Relationships
+
+### 4. Loaded Nodes + Relationships
 Used LOAD CSV to build the full graph in 5 steps:
+- Movie nodes — 3,114 nodes with all properties including free text `overview` and `tagline`
+- Director nodes + DIRECTED — 1,400 directors linked to their movies
+- Actor nodes + ACTED_IN — 1,243 actors linked to their movies
+- Genre nodes + BELONGS_TO — 991 genres linked to movies
+- COLLABORATED_WITH — 3,059 relationships between directors and actors, weighted by number of movies and total revenue
 
-   Movie nodes — 3,114 nodes with all properties including free text overview and tagline
-   Director nodes + DIRECTED — 1,400 directors linked to their movies
-   Actor nodes + ACTED_IN — 1,243 actors linked to their movies
-   Genre nodes + BELONGS_TO — 991 genres linked to movies
-   COLLABORATED_WITH — 3,059 relationships between directors and actors, weighted by number of movies and total revenue
+### 5. Verified & Visualized
+Confirmed all nodes and relationships loaded correctly, then ran a visual query showing the blockbuster collaboration network (revenue > $500M) — 10 Directors, 11 Actors, 15 Movies.
 
-5. Verified & Visualized
-Confirmed all nodes and relationships loaded correctly, then ran a visual query showing the blockbuster collaboration
- network (revenue > $500M) — 10 Directors, 11 Actors, 15 Movies.
+### 6. ROI Queries (Stage 3)
+Added 3 demo-quality Cypher queries:
+- Top collaborations by ROI
+- ROI with vs without specific actor collaboration
+- Most valuable collaboration networks by total revenue
 
 ---
 
@@ -160,13 +177,24 @@ Confirmed all nodes and relationships loaded correctly, then ran a visual query 
 
 ---
 
-## Repository Structure
+## How to Run
 
-Techtators-Big-Data-and-Bussiness-Intelligence/
-├── data/
-│   └── movies_cleaned.csv
-├── neo4j/
-│   └── load_csv_queries.cypher
-├── notebooks/
-│   └── Code_clean_duckdb.ipynb
-└── README.md
+### ETL Pipeline
+1. Download raw dataset from Kaggle link above
+2. Place in `data/` folder
+3. Open `notebooks/01_etl.ipynb`
+4. Install dependencies: `pip install duckdb pandas`
+5. Run all cells
+
+### Neo4j Graph Load
+1. Install Neo4j Desktop from neo4j.com
+2. Create a new database
+3. Copy `movies_cleaned.csv` to the Neo4j import folder
+4. Run `notebooks/02_graph_load.ipynb`
+
+### Exploration & Analysis
+- Open `notebooks/00_exploration_analysis.ipynb` for full analytical queries
+
+---
+
+## Repository Structure
