@@ -127,13 +127,14 @@ After downloading:
 | Adventure + Fantasy | $739M | 393% |
 | Adventure + Fantasy + Action | $621M | 379% |
 
+
 ### ROI: With vs Without Collaboration
 | Director | Actor | ROI With | ROI Without | Difference |
 |---|---|---|---|---|
+| Michel Hazanavicius | Jean Dujardin | 22,325% | 382% | +21,943% |
+| Steven Soderbergh | Julia Roberts | 6,365% | 158% | +6,207% |
 | Peter Jackson | Elijah Wood | 999% | 320% | +679% |
 | Robert Zemeckis | Tom Hanks | 906% | 280% | +626% |
-| Russo Brothers | Joe Russo | 530% | 200% | +330% |
-
 ---
 
 ## What We Did in Neo4j
@@ -176,25 +177,3 @@ Added 3 demo-quality Cypher queries:
 | GitHub | Version control |
 
 ---
-
-## How to Run
-
-### ETL Pipeline
-1. Download raw dataset from Kaggle link above
-2. Place in `data/` folder
-3. Open `notebooks/01_etl.ipynb`
-4. Install dependencies: `pip install duckdb pandas`
-5. Run all cells
-
-### Neo4j Graph Load
-1. Install Neo4j Desktop from neo4j.com
-2. Create a new database
-3. Copy `movies_cleaned.csv` to the Neo4j import folder
-4. Run `notebooks/02_graph_load.ipynb`
-
-### Exploration & Analysis
-- Open `notebooks/00_exploration_analysis.ipynb` for full analytical queries
-
----
-
-## Repository Structure
