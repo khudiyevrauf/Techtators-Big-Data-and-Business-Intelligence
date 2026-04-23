@@ -51,7 +51,7 @@ After downloading:
 
 ## Project Stages
 
-### Stage 1 — Team Formation + Dataset Discovery ✅
+### Stage 1 — Team Formation + Dataset Discovery 
 - Selected and explored the IMDB + TMDb dataset
 - Defined business question
 - Built entity/relationship sketch
@@ -62,12 +62,12 @@ After downloading:
   - Filtered movies from 1990 onwards
   - Final dataset: 3,146 movies, 18 columns, 0 nulls
 
-### Stage 2 — Data Modeling + First Load ✅
+### Stage 2 — Data Modeling + First Load 
 - Defined Neo4j schema with 4 node types and 4 relationship types
 - Loaded data using LOAD CSV queries
 - Built collaboration network graph
 
-### Stage 3 — ETL Pipeline + Scale-Up Draft ✅
+### Stage 3 — ETL Pipeline + Scale-Up Draft 
 - Built complete ETL pipeline (Extract → Transform → Load)
 - Exported cleaned data as both CSV and Parquet
 - Built Neo4j graph load notebook with 3 demo Cypher queries
