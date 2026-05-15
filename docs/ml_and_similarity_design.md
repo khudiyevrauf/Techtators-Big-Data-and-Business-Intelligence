@@ -110,3 +110,84 @@ High ROI — S6 features should improve recall without sacrificing precision.
 
 **S6 merge operation:**
 df_s6 = baseline_df.merge(gds_features_df, how='left', on='node_id')
+
+---
+
+## 5. Final Knowledge-Graph Schema
+
+### Nodes and Properties
+
+| Node | Count | Original Properties | New Derived Properties (S6) |
+|---|---|---|---|
+| Movie | 3,114 | title, revenue, budget, roi, imdb_rating, runtime, release_year, overview ✦, tagline ✦ | — |
+| Director | 1,400 | name | pagerank (float), community (int) |
+| Actor | 1,243 | name | — |
+| Genre | 991 | name | — |
+
+### Relationships
+
+| Relationship | Count | Properties | Changes from S2/S3 |
+|---|---|---|---|
+| DIRECTED | 3,146 | — | No change |
+| ACTED_IN | 3,137 | — | No change |
+| BELONGS_TO | 3,144 | — | No change |
+| COLLABORATED_WITH | 3,059 | movies (int), total_revenue (float) | No change |
+
+### New Derived Properties Added in S6
+
+**Director.pagerank**
+- Computed via `gds.pageRank.write` on the `collab_graph` projection
+- Projection included Director, Actor, Movie nodes and all relationships
+- Parameters: maxIterations=20, dampingFactor=0.85
+- Measures global importance of each director in the collaboration network
+
+**Director.community**
+- Computed via `gds.louvain.write` on the `collab_graph` projection
+- Parameters: default resolution, no intermediate communities
+- Identifies which natural collaboration cluster each director belongs to
+- Community IDs are arbitrary integers — not ordinal
+
+### Schema Changes from S2/S3
+No structural changes to nodes or relationships. The only additions are
+the two derived scalar properties written directly onto Director nodes
+by the GDS algorithms. The graph topology remains identical to S2/S3.
+
+---
+
+## 6. Streamlit Data Flow
+
+The Streamlit dashboard loads data and responds to user input through
+three categories of queries listed below.
+
+### Load-time Queries (run once on app startup)
+1. Read `movies_cleaned.csv` into a pandas DataFrame for the collaboration
+   overview table
+2. Read `feature_matrix.csv` into memory for ML prediction inputs
+3. Load the trained Random Forest pipeline from `model.pkl` (serialized
+   with joblib after S6 training)
+4. Initialize `QdrantClient(host='localhost', port=6333)` and verify the
+   `movie_overviews` collection exists with 3,146 points
+5. Connect to Neo4j via `GraphDatabase.driver` and run a summary query
+   to populate the top-10 collaboration networks table on the homepage
+
+### User-input Queries (run on every user interaction)
+1. **Similarity search tab** — user pastes free text into the input box →
+   encode with `SentenceTransformer('all-MiniLM-L6-v2')` → call
+   `client.query_points(collection_name='movie_overviews', query=vector,
+   limit=5, with_payload=True)` with optional payload filters (roi,
+   imdb_rating, genres_list) → render results as cards
+2. **ROI prediction tab** — user selects a director and actor from
+   dropdowns → pull their degree features from Neo4j via Cypher →
+   assemble into a single-row DataFrame → call `pipe.predict_proba()`
+   → display High ROI probability as a gauge chart
+3. **Collaboration explorer tab** — user searches for a director by name
+   → Neo4j query returns all COLLABORATED_WITH relationships with revenue
+   and movie count → render as a network graph using pyvis or networkx
+
+### Background Refresh Queries (run on a schedule or manual trigger)
+1. **Graph refresh** — re-run `LOAD CSV` Cypher queries from
+   `load_csv_queries.cypher` if the source CSV is updated
+2. **Embedding refresh** — re-run `05_embeddings.ipynb` cells to
+   regenerate Qdrant collection if new movies are added to the dataset
+3. **Model refresh** — re-run `04_ml.ipynb` enrichment section and
+   serialize the updated pipeline to `model.pkl` after any data update
