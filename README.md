@@ -75,10 +75,39 @@ After downloading:
 - Wrote Scale-Up Reasoning document
 - Wrote Mid-Term Presentation outline
 
-### Stage 4 — Mid-term Presentation ⏳
-### Stage 5 — ML + Embeddings ⏳
-### Stage 6 — Graph Analytics + Interpretation ⏳
-### Stage 7 — Integration Workshop ⏳
+### Stage 4 — Mid-term Presentation
+- Finalized business problem statement using the IMDb + TMDb dataset
+- Designed end-to-end architecture diagram (DuckDB → ETL → Neo4j)
+- Explained data cleaning logic & assumptions (filters, thresholds, temporal scope)
+- Presented Neo4j schema (nodes, relationships, constraints)
+- Demonstrated collaboration network graph with example queries
+  
+### Stage 5 — ML + Embeddings
+- Enhanced the graph with semantic intelligence and predictive capability.
+- Engineered ML-ready features (Budget, Revenue, ROI, Size, Crew size)
+- Built baseline ML models (Revenue prediction, ROI classification)
+- Generated text embeddings  (Movie overviews, Genres and keywords)
+- Stored embeddings as vector properties for similarity search
+  
+### Stage 6 — Graph Analytics + Interpretation
+- Extracted insights from network structure and collaboration patterns
+- Identified influential actors, directors, and producers
+- Detected frequent collaboration clusters
+- Analyzed success propagation through collaboration networks
+- Correlated graph position vs financial success (ROI, revenue)
+- Compared isolated vs highly connected creators
+- Interpreted results with business implications:
+  - Casting strategy
+  - Talent investment decisions
+    
+### Stage 7 — Integration Workshop
+- Integrated DuckDB ETL + Neo4j graph + ML pipeline
+- Automated full pipeline execution (clean → load → analyze)
+- Built interactive Neo4j demo queries for live exploration
+- Demonstrated end-to-end use case:
+  - New movie → predicted success → similar movies → collaboration insights
+- Prepared final project report & technical walkthrough
+  
 ### Stage 8 — Final Presentation ⏳
 
 ---
