@@ -37,7 +37,7 @@ commercial success.
 
 **Dataset**
 - Source: IMDB + TMDb Movie Metadata (1M rows, ~500MB)
-- Final cleaned dataset: 3,146 movies (1990–2024)
+- Final cleaned dataset: 3,114 movies (1990–2024)
 - Link: https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m
 
 **Key Columns**
