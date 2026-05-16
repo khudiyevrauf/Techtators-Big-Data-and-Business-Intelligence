@@ -171,40 +171,6 @@ impact on the commercial success of films?"**
 
 ---
 
-## Repository Structure
-
-
-Techtators-Big-Data-and-Business-Intelligence/
-├── app/
-│   └── streamlit_app.py          ← Streamlit dashboard
-├── data/
-│   ├── movies_cleaned.csv        ← Cleaned dataset
-│   ├── movies_cleaned.parquet    ← Parquet version
-│   ├── feature_matrix.csv        ← ML feature matrix
-│   └── gds_features.csv          ← Neo4j GDS features
-├── docs/
-│   ├── mid_term_outline.md       ← S4 presentation outline
-│   └── ml_and_similarity_design.md ← S5/S6 design document
-├── neo4j/
-│   └── load_csv_queries.cypher   ← All Cypher queries
-├── notebooks/
-│   ├── 00_exploration_analysis.ipynb  ← S1 exploration
-│   ├── 01_etl.ipynb                   ← S3 ETL pipeline
-│   ├── 02_graph_load.ipynb            ← S2/S3 Neo4j load
-│   ├── 03_graph_analytics.ipynb       ← S6 GDS analytics
-│   ├── 04_ml.ipynb                    ← S5/S6 ML classifier
-│   └── 05_embeddings.ipynb            ← S5 Qdrant embeddings
-├── report/
-│   └── scale_up_reasoning.md     ← S3 scale-up document
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-└── README.md
-
-
-
----
-
 ## How to Run
 
 ### Prerequisites
