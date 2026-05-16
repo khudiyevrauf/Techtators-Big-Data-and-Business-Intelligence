@@ -1,32 +1,25 @@
 # Movie Collaboration Network Analysis
-## Techtators-Big-Data-and-Business-Intelligence Capstone Project
+## Techtators — BD & BI Capstone Project | SRH University
 
 ---
 
 ## Business Question
-**"Which collaboration networks between actors and directors have the greatest 
+**"Which collaboration networks between actors and directors have the greatest
 impact on the commercial success of films?"**
 
 ---
 
-## Raw Dataset
-The raw dataset is too large for GitHub (1M rows, ~500MB).
-
-Download it from Kaggle:
-🔗 https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m
-
-After downloading:
-1. Place the file in the `data/` folder
-2. Rename it to `IMDB TMDB Movie Metadata Big Dataset (1M).csv`
-3. Run `notebooks/01_etl.ipynb` to reproduce the cleaned dataset
-
+## Dataset
+**IMDB + TMDb Movie Metadata Dataset (1M rows)**
 - Source: Kaggle — IMDB TMDB Movie Metadata Big Dataset
-- Final cleaned dataset: 3,146 movies (1990–2024)
+- 🔗 https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m
+- Final cleaned dataset: 3,114 movies (1990–2024)
 - Format: CSV + Parquet
 
----
+> The raw dataset is too large for GitHub (~500MB).
+> Download from Kaggle and place in `data/` folder.
 
-## Columns Used
+### Columns Used
 | Column | Type | Description |
 |---|---|---|
 | title | VARCHAR | Movie title |
@@ -45,70 +38,55 @@ After downloading:
 | production_companies | VARCHAR | Production company |
 | production_countries | VARCHAR | Country of production |
 
-✦ Free text / unstructured columns used for semantic embeddings
+✦ Free text columns embedded using sentence-transformers for Qdrant search
 
 ---
 
 ## Project Stages
 
-### Stage 1 — Team Formation + Dataset Discovery 
+### Stage 1 — Dataset Discovery + Business Question 
 - Selected and explored the IMDB + TMDb dataset
-- Defined business question
+- Defined business question and decision maker
 - Built entity/relationship sketch
-- Cleaned dataset using DuckDB:
-  - Removed unwanted columns
-  - Filtered nulls and empty strings
-  - Removed unrealistic values (budget/revenue < $1000, runtime = 0)
-  - Filtered movies from 1990 onwards
-  - Final dataset: 3,146 movies, 18 columns, 0 nulls
+- Identified free text columns for embeddings
 
 ### Stage 2 — Data Modeling + First Load 
-- Defined Neo4j schema with 4 node types and 4 relationship types
-- Loaded data using LOAD CSV queries
-- Built collaboration network graph
+- Cleaned dataset using DuckDB (3,114 movies, 0 nulls)
+- Defined Neo4j schema — 4 node types, 4 relationship types
+- Loaded full graph using LOAD CSV queries
+- Built collaboration network with COLLABORATED_WITH relationships
 
 ### Stage 3 — ETL Pipeline + Scale-Up Draft 
 - Built complete ETL pipeline (Extract → Transform → Load)
-- Exported cleaned data as both CSV and Parquet
-- Built Neo4j graph load notebook with 3 demo Cypher queries
-- Added ROI with vs without collaboration analysis
-- Wrote Scale-Up Reasoning document
-- Wrote Mid-Term Presentation outline
+- Exported cleaned data as CSV and Parquet
+- Ran 5 analytical queries answering the business question
+- Wrote scale-up reasoning document
 
-### Stage 4 — Mid-term Presentation
-- Finalized business problem statement using the IMDb + TMDb dataset
-- Designed end-to-end architecture diagram (DuckDB → ETL → Neo4j)
-- Explained data cleaning logic & assumptions (filters, thresholds, temporal scope)
-- Presented Neo4j schema (nodes, relationships, constraints)
-- Demonstrated collaboration network graph with example queries
-  
-### Stage 5 — ML + Embeddings
-- Enhanced the graph with semantic intelligence and predictive capability.
-- Engineered ML-ready features (Budget, Revenue, ROI, Size, Crew size)
-- Built baseline ML models (Revenue prediction, ROI classification)
-- Generated text embeddings  (Movie overviews, Genres and keywords)
-- Stored embeddings as vector properties for similarity search
-  
-### Stage 6 — Graph Analytics + Interpretation
-- Extracted insights from network structure and collaboration patterns
-- Identified influential actors, directors, and producers
-- Detected frequent collaboration clusters
-- Analyzed success propagation through collaboration networks
-- Correlated graph position vs financial success (ROI, revenue)
-- Compared isolated vs highly connected creators
-- Interpreted results with business implications:
-  - Casting strategy
-  - Talent investment decisions
-    
-### Stage 7 — Integration Workshop
-- Integrated DuckDB ETL + Neo4j graph + ML pipeline
-- Automated full pipeline execution (clean → load → analyze)
-- Built interactive Neo4j demo queries for live exploration
-- Demonstrated end-to-end use case:
-  - New movie → predicted success → similar movies → collaboration insights
-- Prepared final project report & technical walkthrough
-  
-### Stage 8 — Final Presentation ⏳
+### Stage 4 — Mid-term Presentation 
+- 10-minute presentation with live Neo4j demo
+- 3 Cypher queries demonstrated live
+- Product Vision for Streamlit similarity widget
+- Gap analysis and next steps
+
+### Stage 5 — ML + Embeddings 
+- Built baseline Random Forest classifier (81% accuracy)
+- Predicts whether a collaboration will achieve high ROI (>200%)
+- Embedded 3,146 movie overviews using sentence-transformers
+- Loaded vectors into Qdrant with payload filters
+- 3 similarity queries + R+A augmentation
+
+### Stage 6 — Graph Analytics + Interpretation 
+- Built GDS notebook for PageRank + Louvain community detection
+- Merged GDS features onto ML feature matrix
+- Before vs After comparison — baseline vs enriched model
+- Written business interpretation of graph analytics results
+
+### Stage 7 — Integration Workshop 
+- Built Streamlit dashboard with 5 pages
+- Containerised with Docker Compose (Qdrant + Streamlit)
+- Dashboard connects to Neo4j, Qdrant and CSV data
+
+### Stage 8 — Final Presentation 
 
 ---
 
@@ -117,30 +95,38 @@ After downloading:
 ### Nodes
 | Node | Count | Key Properties |
 |---|---|---|
-| Movie | 3,114 | title, revenue, budget, imdb_rating, overview, tagline |
-| Director | 1,400 | name |
+| Movie | 3,114 | title, revenue, budget, roi, imdb_rating, overview ✦, tagline ✦ |
+| Director | 1,400 | name, pagerank, community |
 | Actor | 1,243 | name |
 | Genre | 991 | name |
 
 ### Relationships
 | Relationship | Count | Description |
 |---|---|---|
-| DIRECTED | 3,146 | Director → Movie |
+| DIRECTED | 3,114 | Director → Movie |
 | ACTED_IN | 3,137 | Actor → Movie |
 | BELONGS_TO | 3,144 | Movie → Genre |
-| COLLABORATED_WITH | 3,059 | Director → Actor (weighted by revenue) |
+| COLLABORATED_WITH | 3,059 | Director → Actor (movies count + total revenue) |
 
 ---
 
-## Key Findings (DuckDB Analysis)
+## Key Findings
 
 ### Top Collaboration Networks by Revenue
-| Director | Actor | Movies Together | Total Revenue |
+| Director | Actor | Films | Total Revenue | Avg ROI |
+|---|---|---|---|---|
+| Russo Brothers | Joe Russo | 3 | $5.57B | 530% |
+| Christopher Nolan | Christian Bale | 4 | $3.67B | 358% |
+| David Yates | Daniel Radcliffe | 3 | $3.22B | 509% |
+| Peter Jackson | Elijah Wood | 3 | $2.91B | 999% |
+
+### Top Collaborations by ROI
+| Director | Actor | Avg ROI | Avg Revenue |
 |---|---|---|---|
-| Russo Brothers | Joe Russo | 3 | $5.57B |
-| Christopher Nolan | Christian Bale | 4 | $3.67B |
-| David Yates | Daniel Radcliffe | 3 | $3.22B |
-| Peter Jackson | Elijah Wood | 3 | $2.91B |
+| Michel Hazanavicius | Jean Dujardin | 22,325% | $81M |
+| Steven Soderbergh | Julia Roberts | 6,365% | $75M |
+| Peter Jackson | Elijah Wood | 999% | $972M |
+| Robert Zemeckis | Tom Hanks | 906% | $827M |
 
 ### Most Successful Directors
 | Director | Total Movies | Total Revenue | Avg Rating |
@@ -156,53 +142,124 @@ After downloading:
 | Adventure + Fantasy | $739M | 393% |
 | Adventure + Fantasy + Action | $621M | 379% |
 
+### ML Model Results
+| Metric | Baseline S5 | Enriched S6 (+GDS) |
+|---|---|---|
+| Accuracy | 81% | 75% |
+| F1 Macro | 0.77 | 0.67 |
+| High ROI Precision | 1.00 | 1.00 |
+| High ROI Recall | 0.50 | 0.33 |
 
-### ROI: With vs Without Collaboration
-| Director | Actor | ROI With | ROI Without | Difference |
-|---|---|---|---|---|
-| Michel Hazanavicius | Jean Dujardin | 22,325% | 382% | +21,943% |
-| Steven Soderbergh | Julia Roberts | 6,365% | 158% | +6,207% |
-| Peter Jackson | Elijah Wood | 999% | 320% | +679% |
-| Robert Zemeckis | Tom Hanks | 906% | 280% | +626% |
----
-
-## What We Did in Neo4j
-
-### 1. Setup
-Connected to the locally running Neo4j Desktop instance **bdbi** via the Query Browser at `neo4j://127.0.0.1:7687`.
-
-### 2. Found Import Folder
-Ran a config query to find the exact path where Neo4j reads CSV files from, then copied `movies_cleaned.csv` into that folder via Mac Terminal.
-
-### 3. Created Constraints (Schema)
-Defined uniqueness constraints for all 4 node types — Movie, Director, Actor and Genre — to ensure no duplicate nodes and to speed up lookups.
-
-### 4. Loaded Nodes + Relationships
-Used LOAD CSV to build the full graph in 5 steps:
-- Movie nodes — 3,114 nodes with all properties including free text `overview` and `tagline`
-- Director nodes + DIRECTED — 1,400 directors linked to their movies
-- Actor nodes + ACTED_IN — 1,243 actors linked to their movies
-- Genre nodes + BELONGS_TO — 991 genres linked to movies
-- COLLABORATED_WITH — 3,059 relationships between directors and actors, weighted by number of movies and total revenue
-
-### 5. Verified & Visualized
-Confirmed all nodes and relationships loaded correctly, then ran a visual query showing the blockbuster collaboration network (revenue > $500M) — 10 Directors, 11 Actors, 15 Movies.
-
-### 6. ROI Queries (Stage 3)
-Added 3 demo-quality Cypher queries:
-- Top collaborations by ROI
-- ROI with vs without specific actor collaboration
-- Most valuable collaboration networks by total revenue
+> Degree features (collaboration history) are more predictive than
+> global graph centrality for ROI classification.
 
 ---
 
 ## Tech Stack
 | Tool | Purpose |
 |---|---|
-| Python / Pandas | Initial data exploration |
-| DuckDB | Data cleaning and analytical queries |
-| Neo4j | Graph database and collaboration network |
+| DuckDB | Data cleaning + analytical SQL queries |
+| Neo4j | Graph database + collaboration network |
+| scikit-learn | Random Forest ROI classifier |
+| sentence-transformers | Movie overview embeddings |
+| Qdrant | Vector database + semantic search |
+| Streamlit | Interactive dashboard |
+| Docker Compose | Container orchestration |
+| Python / Pandas | Data processing |
 | Jupyter Notebook | Development environment |
 | GitHub | Version control |
 
 ---
+
+## Repository Structure
+
+
+Techtators-Big-Data-and-Business-Intelligence/
+├── app/
+│   └── streamlit_app.py          ← Streamlit dashboard
+├── data/
+│   ├── movies_cleaned.csv        ← Cleaned dataset
+│   ├── movies_cleaned.parquet    ← Parquet version
+│   ├── feature_matrix.csv        ← ML feature matrix
+│   └── gds_features.csv          ← Neo4j GDS features
+├── docs/
+│   ├── mid_term_outline.md       ← S4 presentation outline
+│   └── ml_and_similarity_design.md ← S5/S6 design document
+├── neo4j/
+│   └── load_csv_queries.cypher   ← All Cypher queries
+├── notebooks/
+│   ├── 00_exploration_analysis.ipynb  ← S1 exploration
+│   ├── 01_etl.ipynb                   ← S3 ETL pipeline
+│   ├── 02_graph_load.ipynb            ← S2/S3 Neo4j load
+│   ├── 03_graph_analytics.ipynb       ← S6 GDS analytics
+│   ├── 04_ml.ipynb                    ← S5/S6 ML classifier
+│   └── 05_embeddings.ipynb            ← S5 Qdrant embeddings
+├── report/
+│   └── scale_up_reasoning.md     ← S3 scale-up document
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
+
+
+
+---
+
+## How to Run
+
+### Prerequisites
+- Neo4j Desktop (running locally)
+- Docker Desktop
+- Python 3.11+
+- Anaconda / Jupyter
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/YOUR_USERNAME/Techtators-Big-Data-and-Business-Intelligence.git
+cd Techtators-Big-Data-and-Business-Intelligence
+```
+
+### 2. Download the raw dataset
+Download from Kaggle and place in `data/` folder:
+🔗 https://www.kaggle.com/datasets/shubhamchandra235/imdb-and-tmdb-movie-metadata-big-dataset-1m
+
+### 3. Run the ETL pipeline
+```bash
+jupyter notebook notebooks/01_etl.ipynb
+```
+
+### 4. Load Neo4j graph
+1. Start Neo4j Desktop and create a database
+2. Copy `data/movies_cleaned.csv` to Neo4j import folder
+3. Run queries from `neo4j/load_csv_queries.cypher`
+
+### 5. Generate embeddings
+```bash
+jupyter notebook notebooks/05_embeddings.ipynb
+```
+
+### 6. Start the dashboard with Docker
+```bash
+docker compose up --build
+```
+
+Open: http://localhost:8501
+
+---
+
+## Dashboard Pages
+| Page | Description |
+|---|---|
+| Overview | Dataset stats, graph counts, top genres |
+| Collaboration Network | Interactive Neo4j network explorer |
+| ROI Analysis | With vs without collaboration comparison |
+| Similarity Search | Qdrant semantic film search |
+| ROI Predictor | Director-actor ROI prediction |
+
+---
+
+## Team
+**Techtators**
+BD & BI Capstone — SRH University
+
+
