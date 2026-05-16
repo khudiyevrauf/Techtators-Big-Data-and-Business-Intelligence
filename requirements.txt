@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+plotly
+neo4j
+qdrant-client
+sentence-transformers
+networkx
+pyvis
+scikit-learn
+duckdb
