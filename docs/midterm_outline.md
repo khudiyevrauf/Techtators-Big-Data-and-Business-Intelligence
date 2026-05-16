@@ -74,7 +74,7 @@ Nodes:
 - Genre (991) — name
 
 Relationships:
-- DIRECTED (3,146) — Director → Movie
+- DIRECTED (3,114) — Director → Movie
 - ACTED_IN (3,137) — Actor → Movie
 - BELONGS_TO (3,144) — Movie → Genre
 - COLLABORATED_WITH (3,059) — Director → Actor
